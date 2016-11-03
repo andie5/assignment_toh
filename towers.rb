@@ -1,25 +1,22 @@
+#!/usr/bin/ruby
 # Towers of Hanoi\
-
-Intialise the board
-def initialise(n)
-  pods = []
-
-end
 
 class TowersOnHanoi
   # attr_accessor :last_name
 
+  # Intialise the board
   def initialize(n)
     @no_of_disks = n
     @won = false
-    toh = Array.new(3)
+    @game_play = true
+    @toh = Array.new(3)
     toh[0] = (1..n).to_a
 
     play
   end
 
   # Return the number of disks selected for this game
-  attr_reader @no_of_disks
+  attr_reader @no_of_disks, @won, @game_play, @toh
 
   def play
     puts "Welcome to Tower of Hanoi!"
@@ -27,34 +24,42 @@ class TowersOnHanoi
     puts "Enter where you'd like to move from and to"
     puts "in the format '1,3'. Enter 'q' to quit."
 
-    while (@won != true)
-      puts "Enter move >"
-      
-      user_move = gets.chomp
-      moves = user_move.split(",")
+    render
 
-      if(move.length == 3)
-        if(move[1] == ",")
-          move[0]
-        end
-      elsif user_move = "q"
-        break
-      end
-
+    while (@won != true || game_play != false)   
+      get_user_input
     end
+  end
 
+  def get_user_input
+    puts "Enter move >"
+      
+    user_move = gets.chomp
+    moves = user_move.split(",")
 
-
+    if (move.length == 3)
+      if(move[1] == ",")
+        if (move[0].to_i <= 3 && (move[2].to_i >= 1 ))
+          move(move[0].to_i, move[2].to_i)
+        else puts "Enter a move in the correct format 'num, num'"
+          get_user_input
+        end
+      end
+    elsif user_move == "q"
+      game_play = false
+    else puts "Enter a move in the correct format 'num, num'"
+          get_user_input
+    end
   end
 
 
   # Check if the game was won
-  def game_won(toh)
+  def game_won
     won = true
     temp = 1
 
-    if(toh[0].empty? && toh[1].empty?)
-      toh[2].each do |element|
+    if(@toh[0].empty? && @toh[1].empty?)
+      @toh[2].each do |element|
         if element = temp + 1
           element+=1
         else
@@ -67,8 +72,8 @@ class TowersOnHanoi
   end
 
   # Check if the move was valid
-  def move_valid?(toh, from, to)
-    if toh[to].first < array[from].first
+  def move_valid?(from, to)
+    if @toh[to].first < array[from].first
       return true
     else false
     end
@@ -81,20 +86,20 @@ class TowersOnHanoi
     if move_valid?(toh, from, to)
 
       disk = toh[from].shift
-      toh[to].unshift(disk)
+      @toh[to].unshift(disk)
 
       # Check if that was the winning move
-      game_won(toh)
+      game_won(@toh)
     else
       puts "That was an invalid move. Please try again"
     end
   end
  
 # Draw the current state of the board
-  def render(toh)
+  def render
 
     # Loop over each pin array.
-    toh.each do |pin|
+    @toh.each do |pin|
 
       # Loop over each disk on the pins.
       pin.each do |disk|
@@ -106,11 +111,5 @@ class TowersOnHanoi
     end
   end
   
-
-end 
-
-
-# Welcome to Tower of Hanoi!
-# Instructions:
-# Enter where you'd like to move from and to
-# in the format '1,3'. Enter 'q' to quit.
+end
+in the format '1,3'. Enter 'q' to quit.
