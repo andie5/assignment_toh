@@ -11,24 +11,15 @@ class TowerOfHanoi
     @game_play = true
     @toh = Array.new(3)
     @toh[0] = (1..n).to_a
-    @toh[1], @toh[2] = []
+    @toh[1], @toh[2] = [],[]
 
-    # Play the game
-    play
   end
-
-  # Return the number of disks selected for this game
-
-
-  # attr_reader (:no_of_disks, :won, :game_play, :toh)
 
   def play
     puts "Welcome to Tower of Hanoi!"
     puts "Instructions:"
     puts "Enter where you'd like to move from and to"
     puts "in the format '1,3'. Enter 'q' to quit."
-
-    
 
     while (@won != true && @game_play != false)   
       get_user_input
@@ -46,10 +37,10 @@ class TowerOfHanoi
     puts "user input is #{user_input}"
     
     if(user_input.include?(","))
-      puts "contains a comma"
+      # puts "contains a comma"
       moves = user_input.split(",")
       if(moves.length == 2)
-        puts "Correct number of arguments"
+        # puts "Correct number of arguments"
         move(moves[0].to_i, moves[1].to_i)
       else 
         help
@@ -95,10 +86,6 @@ class TowerOfHanoi
     end
   end
 
-  
-
-
-
   # Move a disk from 1 pin to the other
   def move(from, to)
     if move_valid?(from, to)
@@ -115,7 +102,7 @@ class TowerOfHanoi
 
       puts "The current state of the pin we are pushing to #{@toh[to]}and from #{@toh[from]}"
 
-      if(@toh[to].nil?)
+      if(@toh[to].empty?)
         @toh[to] = [disk]
         puts "The to destination was empty"
       else
@@ -129,7 +116,7 @@ class TowerOfHanoi
         @game_play = false
       end
     else
-      puts "That was an invalid move. Please try again"
+      puts "Invalid move. Please try again!"
     end
   end
 
@@ -139,16 +126,31 @@ class TowerOfHanoi
     puts "checking if the moves are valid"
     puts "moving from #{from} to #{to}"
 
-    if(from.between?(1,3) && to.between?(1,3))
-      "valid pin number"
+    # if(from.between?(1,3))
+    #   puts "the first number is valid"
+    # end
+
+    # if(to.between?(1,3))
+    #   puts "the second number is valid"
+    # end
+
+    if((from.between?(1,3)) && (to.between?(1,3)))
+      puts "valid pin number"
       from = from-1
       to = to-1
-      if (@toh[to].nil?)
+
+
+
+      if(@toh[from].empty?)
+        return false
+      elsif(@toh[to].empty?)
         puts "destination pin is empty"
         return true  
-      elsif(@toh[to].first < @toh[from].first)
+      elsif((@toh[from].first) < (@toh[to].first))
+        puts "#{@toh[to].first} is less than #{@toh[to].first} "
         return true
-      else false
+      else 
+        return false
       end
     else false
     end
