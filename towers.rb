@@ -69,8 +69,8 @@ class TowerOfHanoi
     if(@toh[0].empty? && @toh[1].empty?)
       if(@toh[2].length == @no_of_disks)
         @toh[2].each do |element|
-          if element = temp + 1
-            element+=1
+          if element == temp
+            temp+=1
           else
             won = false
             return won
@@ -89,22 +89,19 @@ class TowerOfHanoi
   # Move a disk from 1 pin to the other
   def move(from, to)
     if move_valid?(from, to)
-      puts "valid move"
-      puts "#{@toh}"
+      # puts "valid move"
+      # puts "#{@toh}"
 
       from = from-1
       to = to-1
 
       disk = @toh[from].shift
 
-      puts "The disk we are moving #{disk}"
-      
-
-      puts "The current state of the pin we are pushing to #{@toh[to]}and from #{@toh[from]}"
+      # puts "The disk we are moving #{disk}"
 
       if(@toh[to].empty?)
         @toh[to] = [disk]
-        puts "The to destination was empty"
+        # puts "The to destination was empty"
       else
         @toh[to].unshift(disk)
       end
@@ -114,6 +111,7 @@ class TowerOfHanoi
       # Check if that was the winning move
       if game_won
         @game_play = false
+        puts "You won"
       end
     else
       puts "Invalid move. Please try again!"
@@ -123,7 +121,7 @@ class TowerOfHanoi
   # Check if the move was valid
   def move_valid?(from, to)
 
-    puts "checking if the moves are valid"
+    # puts "checking if the moves are valid"
     puts "moving from #{from} to #{to}"
 
     # if(from.between?(1,3))
@@ -135,7 +133,7 @@ class TowerOfHanoi
     # end
 
     if((from.between?(1,3)) && (to.between?(1,3)))
-      puts "valid pin number"
+      # puts "valid pin number"
       from = from-1
       to = to-1
 
@@ -144,10 +142,10 @@ class TowerOfHanoi
       if(@toh[from].empty?)
         return false
       elsif(@toh[to].empty?)
-        puts "destination pin is empty"
+        # puts "destination pin is empty"
         return true  
       elsif((@toh[from].first) < (@toh[to].first))
-        puts "#{@toh[to].first} is less than #{@toh[to].first} "
+        # puts "#{@toh[to].first} is less than #{@toh[to].first} "
         return true
       else 
         return false
